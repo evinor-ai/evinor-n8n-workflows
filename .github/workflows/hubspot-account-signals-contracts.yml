@@ -1,0 +1,29 @@
+name: HubSpot workflow source contracts
+
+on:
+  pull_request:
+    paths:
+      - 'workflows/hubspot-account-signals/**'
+      - '.github/workflows/hubspot-account-signals-contracts.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'workflows/hubspot-account-signals/**'
+      - '.github/workflows/hubspot-account-signals-contracts.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  source-contracts:
+    name: Source contracts (6 matching + 13 branch)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check company matching (6 cases)
+        run: node workflows/hubspot-account-signals/review/check-company-match.cjs
+      - name: Check Slack, Sheets and digest (13 cases)
+        run: node workflows/hubspot-account-signals/review/check-branch-outputs.cjs

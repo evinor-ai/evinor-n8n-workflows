@@ -9,6 +9,8 @@ node workflows/hubspot-account-signals/review/check-branch-outputs.cjs
 
 Expected: **6/6 matching cases passed** and **13/13 branch cases passed**, each with exit code 0. A mismatch prints the expected and actual fields and exits 1. Both commands need no packages, n8n installation, credentials, server or network connection, and write no files.
 
+[GitHub Actions](../../../.github/workflows/hubspot-account-signals-contracts.yml) runs these same two commands on Node.js 22 for pull requests and pushes to `main` that change this workflow/review folder or the CI file. The PR check is **Source contracts (6 matching + 13 branch)**; a mismatch fails its corresponding step. Scope remains source-level checks with local fixtures.
+
 ## Company matching: six cases
 
 The check reads the **current `../workflow.json`** on every run. It executes the source of `Normalize event`, the `Find HubSpot company` request expression, and `Resolve CRM match`. The local HubSpot fixture applies the request's OR filter groups, EQ predicates, property selection and limit before resolution. Matching logic is taken from the workflow; it is not copied into the check.
